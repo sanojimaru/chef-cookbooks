@@ -42,9 +42,9 @@ when "redhat","centos","scientific","amazon","oracle"
 end
 
 # --prefix is controlled by install_dir
-configure_options = node['zabbix']['agent']['configure_options'].reject do |option|
-  option.match(/\s*--prefix(\s|=).+/)
-end
+#node['zabbix']['agent']['configure_options'].delete_if do |option|
+  #option.match(/\s*--prefix(\s|=).+/)
+#end
 
 # installation of zabbix bin
 script "install_zabbix_server" do
@@ -56,7 +56,7 @@ script "install_zabbix_server" do
   notifies :restart, "service[zabbix_server]"
   code <<-EOH
   tar xvfz #{node['zabbix']['src_dir']}/zabbix-#{node['zabbix']['server']['version']}-server.tar.gz
-  (cd zabbix-#{node['zabbix']['server']['version']} && ./configure --enable-server --with-#{node['zabbix']['server']['db_install_method']} --prefix=#{node['zabbix']['install_dir']} #{configure_options.join(" ")})
+  (cd zabbix-#{node['zabbix']['server']['version']} && ./configure --enable-server --with-libcurl --with-net-snmp --with-#{node['zabbix']['server']['db_install_method']} --prefix=#{node['zabbix']['install_dir']})
   (cd zabbix-#{node['zabbix']['server']['version']} && make install)
   EOH
 end

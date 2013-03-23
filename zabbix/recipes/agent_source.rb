@@ -16,7 +16,7 @@ when "ubuntu","debian"
     end
   end
   init_template = 'zabbix_agentd.init.erb'
-  
+
 when "redhat","centos","scientific","amazon"
     include_recipe "yum::epel"
     %w{ fping curl-devel iksemel-devel iksemel-utils net-snmp-libs net-snmp-devel openssl-devel redhat-lsb }.each do |pck|
@@ -51,9 +51,9 @@ service "zabbix_agentd" do
 end
 
 # --prefix is controlled by install_dir
-node['zabbix']['agent']['configure_options'].delete_if do |option|
-  option.match(/\s*--prefix(\s|=).+/)
-end
+#node['zabbix']['agent']['configure_options'].delete_if do |option|
+  #option.match(/\s*--prefix(\s|=).+/)
+#end
 
 # installation of zabbix bin
 script "install_zabbix_agent" do
@@ -66,7 +66,7 @@ script "install_zabbix_agent" do
   rm -rf /tmp/zabbix-#{node['zabbix']['agent']['version']}
   tar xvfz zabbix-#{node['zabbix']['agent']['version']}-agent.tar.gz -C /tmp
   mv /tmp/zabbix-#{node['zabbix']['agent']['version']} zabbix-#{node['zabbix']['agent']['version']}-agent
-  (cd zabbix-#{node['zabbix']['agent']['version']}-agent && ./configure --enable-agent --prefix=#{node['zabbix']['install_dir']} #{node['zabbix']['agent']['configure_options'].join(" ")})
+  (cd zabbix-#{node['zabbix']['agent']['version']}-agent && ./configure --enable-agent --prefix=#{node['zabbix']['install_dir']} --with-libcurl)
   (cd zabbix-#{node['zabbix']['agent']['version']}-agent && make install)
   EOH
 end

@@ -8,8 +8,7 @@ default['zabbix']['agent']['branch'] = "ZABBIX%20Latest%20Stable"
 default['zabbix']['agent']['servers'] = []
 default['zabbix']['agent']['servers_active'] = []
 default['zabbix']['agent']['hostname'] = node['fqdn']
-default['zabbix']['agent']['configure_options'] = [ "--with-libcurl" ]
-default['zabbix']['agent']['install_method'] = "prebuild"
+default['zabbix']['agent']['install_method'] = "source"
 default['zabbix']['agent']['include_dir'] = "/opt/zabbix/agent_include"
 
 default['zabbix']['server']['install'] = false
@@ -21,7 +20,6 @@ default['zabbix']['server']['dbhost'] = "localhost"
 default['zabbix']['server']['dbpassword'] = nil
 default['zabbix']['server']['dbport'] = "3306"
 default['zabbix']['server']['install_method'] = "source"
-default['zabbix']['server']['configure_options'] = [ "--with-libcurl","--with-net-snmp","--with-mysql" ]
 default['zabbix']['server']['include_dir'] = "/opt/zabbix/server_include"
 default['zabbix']['server']['db_install_method'] = "mysql"
 default['zabbix']['server']['rds_dbhost'] = nil
@@ -34,7 +32,7 @@ default['zabbix']['server']['rds_dbpassword'] = nil
 default['zabbix']['server']['log_level'] = 3
 default['zabbix']['server']['housekeeping_frequency'] = "1"
 default['zabbix']['server']['max_housekeeper_delete'] = "100000"
- 
+
 default['zabbix']['web']['install'] = false
 default['zabbix']['web']['fqdn'] = nil
 default['zabbix']['web']['aliases'] = ["zabbix"]
