@@ -21,6 +21,8 @@ when "debian"
   %w{ php5-mysql php5-gd }.each do |pck|
     package pck do
       action :install
+      retries 1
+      retry_delay 15
       notifies :restart, "service[apache2]"
     end
   end
@@ -31,6 +33,8 @@ when "rhel"
     %w{ php53-mysql php53-gd php53-bcmath php53-mbstring }.each do |pck|
       package pck do
         action :install
+        retries 1
+        retry_delay 15
         notifies :restart, "service[apache2]"
       end
     end
@@ -38,6 +42,8 @@ when "rhel"
     %w{ php-mysql php-gd php-bcmath php-mbstring php-xml }.each do |pck|
       package pck do
         action :install
+        retries 1
+        retry_delay 15
         notifies :restart, "service[apache2]"
       end
     end
@@ -71,4 +77,4 @@ web_app node['zabbix']['web']['fqdn'] do
   server_aliases node['zabbix']['web']['aliases']
   docroot node['zabbix']['web_dir']
   only_if { node['zabbix']['web']['fqdn'] != nil }
-end  
+end

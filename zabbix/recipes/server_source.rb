@@ -19,6 +19,8 @@ when "ubuntu","debian"
   %w{ fping libmysql++-dev libmysql++3 libcurl3 libiksemel-dev libiksemel3 libsnmp-dev snmp libiksemel-utils libcurl4-openssl-dev }.each do |pck|
     package pck do
       action :install
+      retries 1
+      retry_delay 15
     end
   end
   init_template = 'zabbix_server.init.erb'
@@ -32,13 +34,15 @@ when "redhat","centos","scientific","amazon","oracle"
     %w{ fping mysql-devel iksemel-devel iksemel-utils net-snmp-libs net-snmp-devel openssl-devel redhat-lsb }.push(curldev).each do |pck|
       package pck do
         action :install
+        retries 1
+        retry_delay 15
       end
     end
   init_template = 'zabbix_server.init-rh.erb'
 end
 
 # --prefix is controlled by install_dir
-node['zabbix']['agent']['configure_options'].delete_if do |option|
+configure_options = node['zabbix']['agent']['configure_options'].reject do |option|
   option.match(/\s*--prefix(\s|=).+/)
 end
 
@@ -47,11 +51,12 @@ script "install_zabbix_server" do
   interpreter "bash"
   user "root"
   cwd node['zabbix']['src_dir']
+  puts node['zabbix']['src_dir']
   action :nothing
   notifies :restart, "service[zabbix_server]"
   code <<-EOH
   tar xvfz #{node['zabbix']['src_dir']}/zabbix-#{node['zabbix']['server']['version']}-server.tar.gz
-  (cd zabbix-#{node['zabbix']['server']['version']} && ./configure --enable-server --prefix=#{node['zabbix']['install_dir']} #{node['zabbix']['server']['configure_options'].join(" ")})
+  (cd zabbix-#{node['zabbix']['server']['version']} && ./configure --enable-server --with-#{node['zabbix']['server']['db_install_method']} --prefix=#{node['zabbix']['install_dir']} #{configure_options.join(" ")})
   (cd zabbix-#{node['zabbix']['server']['version']} && make install)
   EOH
 end
