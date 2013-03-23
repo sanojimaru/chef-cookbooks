@@ -14,7 +14,7 @@ end
 
 # Install Init script
 template "/etc/init.d/zabbix_agentd" do
-  source value_for_platform([ "centos", "redhat", "scientific", "oracle" ] => {"default" => "zabbix_agentd.init-rh.erb"}, "default" => "zabbix_agentd.init.erb")
+  source value_for_platform([ "centos", "redhat", "scientific", "amazon", "oracle" ] => {"default" => "zabbix_agentd.init-rh.erb"}, "default" => "zabbix_agentd.init.erb")
   owner "root"
   group "root"
   mode "754"
@@ -53,7 +53,7 @@ script "install_zabbix_agent" do
   tar xvfz #{node['zabbix']['src_dir']}/zabbix_agents_#{node['zabbix']['agent']['version']}.linux2_6.#{$zabbix_arch}.tar.gz
   EOH
 end
-  
+
 # Download and intall zabbix agent bins.
 remote_file "#{node['zabbix']['src_dir']}/zabbix_agents_#{node['zabbix']['agent']['version']}.linux2_6.#{$zabbix_arch}.tar.gz" do
   source "http://www.zabbix.com/downloads/#{node['zabbix']['agent']['version']}/zabbix_agents_#{node['zabbix']['agent']['version']}.linux2_6.#{$zabbix_arch}.tar.gz"
