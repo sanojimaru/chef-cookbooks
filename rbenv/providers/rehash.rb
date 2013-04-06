@@ -1,10 +1,10 @@
 #
 # Cookbook Name:: rbenv
-# Library:: recipe_ext
+# Provider:: rehash
 #
-# Author:: Jamie Winsor (<jamie@vialstudios.com>)
+# Author:: Fletcher Nichol <fnichol@nichol.ca>
 #
-# Copyright 2011-2012, Riot Games
+# Copyright 2011, Fletcher Nichol
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,18 +19,18 @@
 # limitations under the License.
 #
 
-class Chef
-  module Mixin
-    module Rbenv
-      # stub to satisfy RecipeExt (library load order not guaranteed)
-    end
-  end
-  
-  module Rbenv
-    module RecipeExt
-      include Chef::Mixin::Rbenv
-    end
-  end
-end
+include Chef::Rbenv::ScriptHelpers
 
-Chef::Recipe.send(:include, Chef::Rbenv::RecipeExt)
+action :run do
+  command = %{rbenv rehash}
+
+  rbenv_script "#{command} #{which_rbenv}" do
+    code        command
+    user        new_resource.user       if new_resource.user
+    root_path   new_resource.root_path  if new_resource.root_path
+
+    action      :nothing
+  end.run_action(:run)
+
+  new_resource.updated_by_last_action(true)
+end

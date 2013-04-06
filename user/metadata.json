@@ -9,7 +9,8 @@
     "ubuntu": ">= 0.0.0",
     "debian": ">= 0.0.0",
     "mac_os_x": ">= 0.0.0",
-    "suse": ">= 0.0.0"
+    "suse": ">= 0.0.0",
+    "amazon": ">= 0.0.0"
   },
   "dependencies": {
   },
@@ -28,8 +29,7 @@
   "groupings": {
   },
   "recipes": {
-    "user": "This recipe is a no-op and does nothing.",
-    "user::data_bag": "Processes a list of users with data drawn from a data bag."
+    "user": "Processes a list of users with node config file.",
   },
   "version": "0.3.0"
 }

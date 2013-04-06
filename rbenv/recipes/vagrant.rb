@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: ruby
-# Recipe:: symlinks
+# Cookbook Name:: rbenv
+# Recipe:: vagrant
 #
-# Copyright 2010, FindsYou Limited
+# Copyright 2011, Fletcher Nichol
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,4 +17,3 @@
 # limitations under the License.
 #
 
-ruby_symlinks node[:languages][:ruby][:default_version] || "1.8"

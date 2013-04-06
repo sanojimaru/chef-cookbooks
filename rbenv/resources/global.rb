@@ -1,8 +1,10 @@
 #
-# Cookbook Name:: ruby
-# Recipe:: 1.8
+# Cookbook Name:: rbenv
+# Resource:: global
 #
-# Copyright 2010, FindsYou Limited
+# Author:: Fletcher Nichol <fnichol@nichol.ca>
+#
+# Copyright 2011, Fletcher Nichol
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,4 +19,17 @@
 # limitations under the License.
 #
 
-ruby_packages "1.8"
+actions :create
+
+attribute :rbenv_version, :kind_of => String, :name_attribute => true
+attribute :user,          :kind_of => String
+attribute :root_path,     :kind_of => String
+
+def initialize(*args)
+  super
+  @action = :create
+end
+
+def to_s
+  "#{super} (#{@user || 'system'})"
+end

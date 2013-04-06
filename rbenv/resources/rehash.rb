@@ -1,10 +1,10 @@
 #
 # Cookbook Name:: rbenv
-# Recipe:: ohai_plugin
+# Resource:: rehash
 #
-# Author:: Jamie Winsor (<jamie@vialstudios.com>)
+# Author:: Fletcher Nichol <fnichol@nichol.ca>
 #
-# Copyright 2011-2012, Riot Games
+# Copyright 2011, Fletcher Nichol
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,18 +19,13 @@
 # limitations under the License.
 #
 
-include_recipe "ohai"
+actions :run
 
-bin_path = rbenv_binary_path
-template "#{node[:ohai][:plugin_path]}/rbenv.rb" do
-  source 'plugins/rbenv.rb.erb'
-  owner 'root'
-  group 'root'
-  mode 0755
+attribute :name,      :kind_of => String, :name_attribute => true
+attribute :user,      :kind_of => String
+attribute :root_path, :kind_of => String
 
-  variables(
-    :rbenv_bin => bin_path
-  )
-
-  notifies :reload, "ohai[custom_plugins]", :immediately
+def initialize(*args)
+  super
+  @action = :run
 end
