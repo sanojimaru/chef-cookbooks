@@ -40,10 +40,6 @@ users = node['user']['accounts']
 
 # only manage the subset of users defined
 users.each do |u|
-puts "*" * 80
-puts u
-puts "*" * 80
-
   username = u['username'] || u['id']
 
   user_account username do

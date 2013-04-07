@@ -1,0 +1,24 @@
+#
+# Cookbook Name:: nginx_sites
+# Recipe:: default
+#
+# Copyright 2013, Hirohide Sano <sanojimaru@gmail.com>
+#
+# All rights reserved - Do Not Redistribute
+#
+
+include_recipe 'nginx'
+
+node['nginx_sites']['sites'].each do |site|
+  template "#{site['name']}.conf" do
+    path "#{node['nginx']['dir']}/conf.d/#{site['name']}.conf"
+    source "#{site['type']}.conf.erb"
+    variables :site => site
+    action :create
+  end
+end
+
+service 'nginx' do
+  supports :status => true, :restart => true, :reload => true
+  action :start
+end

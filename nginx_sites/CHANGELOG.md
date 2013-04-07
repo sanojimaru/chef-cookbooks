@@ -1,10 +1,10 @@
-# CHANGELOG for base_pakcages
+# CHANGELOG for nginx_sites
 
-This file is used to list changes made in each version of base_pakcages.
+This file is used to list changes made in each version of nginx_sites.
 
 ## 0.1.0:
 
-* Initial release of base_pakcages
+* Initial release of nginx_sites
 
 - - -
 Check the [Markdown Syntax Guide](http://daringfireball.net/projects/markdown/syntax) for help with Markdown.
