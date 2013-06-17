@@ -20,24 +20,25 @@
 
 include_recipe 'nginx::ohai_plugin'
 
-case node['nginx']['install_method']
-when 'source'
-  include_recipe 'nginx::source'
-when 'package'
-  case node['platform']
-  when 'redhat','centos','scientific','amazon','oracle'
-    if node['nginx']['repo_source'] == 'epel'
-      include_recipe 'yum::epel'
-    else
-      include_recipe 'nginx::repo'
-    end
-  end
-  package node['nginx']['package_name']
-  service 'nginx' do
-    supports :status => true, :restart => true, :reload => true
-    action :enable
-  end
-  include_recipe 'nginx::commons'
+package node['nginx']['package_name']
+service 'nginx' do
+  supports :status => true, :restart => true, :reload => true
+  action :enable
+end
+include_recipe 'nginx::commons'
+
+tmp_dir = '/var/lib/nginx/tmp'
+directory tmp_dir do
+    recursive true
+    action :delete
+end
+
+directory tmp_dir do
+  owner node['nginx']['user']
+  group node['nginx']['group']
+  mode 0755
+  recursive true
+  action :create
 end
 
 service 'nginx' do
