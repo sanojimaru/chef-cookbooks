@@ -16,6 +16,13 @@ node['nginx_sites']['sites'].each do |site|
     variables :site => site
     action :create
   end
+
+  directory site['dir'] do
+    owner node['nginx']['user']
+    group node['nginx']['group']
+    mode 0755
+    action :create
+  end
 end
 
 service 'nginx' do
