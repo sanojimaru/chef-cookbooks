@@ -11,6 +11,6 @@ template "/etc/sysconfig/clock" do
 end
 
 execute "timezone_update" do
-  command "cp /usr/share/zoneinfo/Japan /etc/localtime"
+  command "cp /usr/share/zoneinfo/#{node[:timezone][:zoneinfo]} /etc/localtime"
   action :nothing
 end
