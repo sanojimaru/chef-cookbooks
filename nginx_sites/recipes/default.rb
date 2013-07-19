@@ -23,7 +23,7 @@ node['nginx_sites']['sites'].each do |site|
     mode 0755
     action :create
 
-    if_not{ File.exists? site['dir'] }
+    not_if do; File.exists? site['dir']; end
   end
 end
 
