@@ -22,6 +22,8 @@ node['nginx_sites']['sites'].each do |site|
     group node['nginx']['group']
     mode 0755
     action :create
+
+    if_not{ File.exists? site['dir'] }
   end
 end
 
