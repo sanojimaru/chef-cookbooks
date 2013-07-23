@@ -104,6 +104,14 @@ template node['php-fpm']['conf_file'] do
   group "root"
 end
 
+directory "/var/lib/php" do
+  recursive true
+  owner node["php-fpm"]["pool"]["www"]["user"]
+  group node["php-fpm"]["pool"]["www"]["group"]
+  mode 0755
+  action :create
+end
+
 node['php-fpm']['pools'].each do |pool|
   fpm_pool pool do
     php_fpm_service_name php_fpm_service_name
