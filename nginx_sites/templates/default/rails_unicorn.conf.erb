@@ -1,5 +1,5 @@
 upstream <%= @site['name'] %>.unicorn {
-  server unix:<%= @site['dir'] %>/shared/sockets/unicorn.sock;
+  server unix:<%= @document_root %>/shared/sockets/unicorn.sock;
 }
 
 server {
@@ -9,7 +9,7 @@ server {
   access_log /var/log/nginx/<%= @site['name'] %>.access.log;
   error_log /var/log/nginx/<%= @site['name'] %>.error.log;
 
-  root <%= @site['dir'] %>/current/public;
+  root <%= @document_root %>/current/public;
   index index.html;
 
   location / {

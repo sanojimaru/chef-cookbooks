@@ -21,8 +21,8 @@
 
 include_recipe 'metachef'
 
-standard_dirs('redis.server') do
-  directories   :conf_dir
+package "redis" do
+  action :install
 end
 
 template "#{node[:redis][:conf_dir]}/redis.conf" do
@@ -32,3 +32,8 @@ template "#{node[:redis][:conf_dir]}/redis.conf" do
   mode          "0644"
   variables     :redis => node[:redis], :redis_server => node[:redis][:server]
 end
+
+service "redis" do
+  action [:enable, :start]
+end
+

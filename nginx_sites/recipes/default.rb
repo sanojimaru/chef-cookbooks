@@ -10,20 +10,22 @@
 include_recipe 'nginx'
 
 node['nginx_sites']['sites'].each do |site|
+  document_root = site['dir'] || "/var/www/#{site['name']}"
+
   template "#{site['name']}.conf" do
-    path "#{node['nginx']['dir']}/sites-enabled/#{site['name']}.conf"
+    path "#{node['nginx']['dir']}/conf.d/#{site['name']}.conf"
     source "#{site['type']}.conf.erb"
-    variables :site => site
+    variables :site => site, :document_root => document_root
     action :create
   end
 
-  directory site['dir'] do
+  directory document_root do
     owner node['nginx']['user']
     group node['nginx']['group']
     mode 0755
     action :create
 
-    not_if do; File.exists? site['dir']; end
+    not_if{ File.exists? document_root }
   end
 end
 
